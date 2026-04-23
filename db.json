@@ -1,0 +1,186 @@
+{
+    "colleges": [
+        {
+            "id": 1,
+            "name": "IIT Bombay",
+            "city": "Visakhapatnam",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 2,
+            "name": "IIT Delhi",
+            "city": "Kakinada",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 3,
+            "name": "Jawaharlal Nehru Technological University Anantapur",
+            "city": "Anantapur",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 4,
+            "name": "Sri Venkateswara University",
+            "city": "Tirupati",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 5,
+            "name": "Acharya Nagarjuna University",
+            "city": "Guntur",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 6,
+            "name": "GITAM University",
+            "city": "Visakhapatnam",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 7,
+            "name": "KL University",
+            "city": "Guntur",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 8,
+            "name": "SRM University AP",
+            "city": "Amaravati",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 9,
+            "name": "Vignan's Foundation for Science Technology and Research",
+            "city": "Guntur",
+            "state": "Andhra Pradesh"
+        },
+        {
+            "id": 10,
+            "name": "Gayatri Vidya Parishad College of Engineering",
+            "city": "Visakhapatnam",
+            "state": "Andhra Pradesh"
+        }
+    ],
+    "degrees": [
+        {
+            "id": 1,
+            "name": "Bachelor of Technology (B.Tech)",
+            "short": "B.Tech",
+            "category": "Engineering"
+        },
+        {
+            "id": 2,
+            "name": "Bachelor of Engineering (B.E)",
+            "short": "B.E",
+            "category": "Engineering"
+        },
+        {
+            "id": 3,
+            "name": "Bachelor of Science (B.Sc)",
+            "short": "B.Sc",
+            "category": "Science"
+        },
+        {
+            "id": 4,
+            "name": "Bachelor of Commerce (B.Com)",
+            "short": "B.Com",
+            "category": "Commerce"
+        },
+        {
+            "id": 5,
+            "name": "Bachelor of Arts (B.A)",
+            "short": "B.A",
+            "category": "Arts"
+        },
+        {
+            "id": 6,
+            "name": "Bachelor of Computer Applications (BCA)",
+            "short": "BCA",
+            "category": "Computer"
+        },
+        {
+            "id": 7,
+            "name": "Bachelor of Business Administration (BBA)",
+            "short": "BBA",
+            "category": "Management"
+        },
+        {
+            "id": 8,
+            "name": "Bachelor of Medicine and Bachelor of Surgery (MBBS)",
+            "short": "MBBS",
+            "category": "Medical"
+        },
+        {
+            "id": 9,
+            "name": "Bachelor of Pharmacy (B.Pharm)",
+            "short": "B.Pharm",
+            "category": "Pharmacy"
+        },
+        {
+            "id": 10,
+            "name": "Bachelor of Architecture (B.Arch)",
+            "short": "B.Arch",
+            "category": "Architecture"
+        },
+        {
+            "id": 11,
+            "name": "Master of Technology (M.Tech)",
+            "short": "M.Tech",
+            "category": "Engineering"
+        },
+        {
+            "id": 12,
+            "name": "Master of Engineering (M.E)",
+            "short": "M.E",
+            "category": "Engineering"
+        },
+        {
+            "id": 13,
+            "name": "Master of Science (M.Sc)",
+            "short": "M.Sc",
+            "category": "Science"
+        },
+        {
+            "id": 14,
+            "name": "Master of Commerce (M.Com)",
+            "short": "M.Com",
+            "category": "Commerce"
+        },
+        {
+            "id": 15,
+            "name": "Master of Arts (M.A)",
+            "short": "M.A",
+            "category": "Arts"
+        },
+        {
+            "id": 16,
+            "name": "Master of Computer Applications (MCA)",
+            "short": "MCA",
+            "category": "Computer"
+        },
+        {
+            "id": 17,
+            "name": "Master of Business Administration (MBA)",
+            "short": "MBA",
+            "category": "Management"
+        },
+        {
+            "id": 18,
+            "name": "Doctor of Philosophy (PhD)",
+            "short": "PhD",
+            "category": "Doctorate"
+        },
+        {
+            "id": 19,
+            "name": "Diploma in Engineering",
+            "short": "Diploma",
+            "category": "Diploma"
+        },
+        {
+            "id": 20,
+            "name": "Post Graduate Diploma (PGDM)",
+            "short": "PGDM",
+            "category": "Management"
+        }
+    ]
+}
