@@ -9,13 +9,18 @@ import { schema } from "./validationScema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function StudentForm({ onSubmitData }) {
-    const { control, handleSubmit, setValue,reset } = useForm({
+    const { control, handleSubmit, setValue, reset } = useForm({
         mode: "onChange",
         resolver: yupResolver(schema),
         defaultValues: {
             project: null
         }
     });
+
+    const inputStyles = {
+        backgroundColor: "#f8fafc",
+        borderRadius: 10,
+    };
 
     const [colleges, setColleges] = useState([]);
     const [degrees, setDegrees] = useState([]);
@@ -58,8 +63,8 @@ export default function StudentForm({ onSubmitData }) {
     };
 
     return (
-        <Box sx={{ width: 500, p: 3, pr: 5, borderRight: ".5px solid gray" }} >
-            <Typography variant='h4' sx={{ textAlign: 'center' }}>
+        <Box sx={{ width: "100%", p: 5, borderRadius: 4, border: "1px solid rgba(148,163,184,0.35)", backgroundColor: "#ffffff", boxShadow: "0 24px 80px rgba(15,23,42,0.08)" }} >
+            <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 700, color: '#0f172a' }}>
                 Provide The Details To Build Resume
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,7 +75,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field, fieldState }) => (
-                                <TextField {...field} label="Full Name" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
+                                <TextField {...field} label="Full Name" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} sx={inputStyles} />
                             )}
 
                         />
@@ -83,7 +88,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field, fieldState }) => (
-                                <TextField {...field} label="School Name" fullWidth />
+                                <TextField {...field} label="School Name" fullWidth sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -94,7 +99,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field, fieldState }) => (
-                                <TextField {...field} label="School Percentage" fullWidth />
+                                <TextField {...field} label="School Percentage" fullWidth sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -105,7 +110,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field }) => (
-                                <TextField {...field} label="12th College" fullWidth />
+                                <TextField {...field} label="12th College" fullWidth sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -116,7 +121,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field }) => (
-                                <TextField {...field} label="12th Percentage" fullWidth />
+                                <TextField {...field} label="12th Percentage" fullWidth sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -143,7 +148,7 @@ export default function StudentForm({ onSubmitData }) {
                                     }}
 
                                     renderInput={(params) => (
-                                        <TextField {...params} label="Degree" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
+                                        <TextField {...params} label="Degree" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} sx={inputStyles} />
                                     )}
                                 />
                             )}
@@ -171,7 +176,7 @@ export default function StudentForm({ onSubmitData }) {
                                     }}
 
                                     renderInput={(params) => (
-                                        <TextField {...params} label="College" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
+                                        <TextField {...params} label="College" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} sx={inputStyles} />
                                     )}
                                 />
                             )}
@@ -184,7 +189,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field, fieldState }) => (
-                                <TextField {...field} label="Email" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
+                                <TextField {...field} label="Email" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -195,7 +200,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field, fieldState }) => (
-                                <TextField {...field} label="Phone" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
+                                <TextField {...field} label="Phone" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} sx={inputStyles} />
                             )}
                         />
                     </Grid>
@@ -206,7 +211,7 @@ export default function StudentForm({ onSubmitData }) {
                             control={control}
                             defaultValue=""
                             render={({ field }) => (
-                                <TextField {...field} label="Job Description" fullWidth />
+                                <TextField {...field} label="Job Description" fullWidth sx={inputStyles} />
                             )}
                         />
                     </Grid>

@@ -4,7 +4,6 @@ import Preview from './Preview.jsx'
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 
-
 const Home = () => {
     const previewRef = useRef(null);
 
@@ -60,7 +59,6 @@ const Home = () => {
             const usableWidth = pdfWidth - margin * 2;
             const usableHeight = pdfHeight - margin * 2;
 
-            // Convert image dimensions to PDF scale
             const imgProps = pdf.getImageProperties(dataUrl);
             const imgWidth = usableWidth;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
@@ -88,9 +86,9 @@ const Home = () => {
                 URL.revokeObjectURL(pdfUrl)
             }
 
-            window.open(url, "_blank", "noopener,noreferrer")
             setPdfUrl(url)
             setPdfFileName(`${fileName}_Resume.pdf`)
+            window.open(url, "_blank", "noopener,noreferrer")
         } catch (error) {
             console.error("PDF generation failed", error);
         }
@@ -106,50 +104,80 @@ const Home = () => {
     }
 
     return (
-        <>
-        <h1 className='text-5xl text-center bg-yellow-100 py-5'>ATS RESUME BUILDER</h1>
-        <div className="bg-yellow-100 flex justify-center">
-            <StudentForm onSubmitData={handleFormData} />
+        <div className="min-h-screen bg-linear-to-b from-sky-100 via-slate-100 to-white text-slate-900">
+            <div className="relative overflow-hidden">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-linear-to-br from-sky-200 via-white/0 to-transparent blur-3xl" />
+                <div className="pointer-events-none absolute right-0 top-24 h-96 w-96 rounded-full bg-sky-300/20 blur-3xl" />
 
-            {formData ? (
-                <div className="flex flex-col gap-6 w-full">
-                    <Preview
-                        ref={previewRef}
-                        data={formData}
-                        onDownload={generatePDF}
-                    />
+                <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                    <header className="mb-10 text-center">
+                        <span className="inline-flex rounded-full bg-sky-500/15 px-4 py-1 text-xl font-semibold uppercase tracking-[0.35em]">ATS Resume Builder</span>
+                        <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Create a polished, ATS-friendly resume instantly.</h1>
+                        <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">Fill the form, preview your resume live, and open the generated PDF in a new browser tab for final inspection or download.</p>
+                    </header>
 
-                    {pdfUrl && (
-                        <div className="w-full bg-white rounded-xl shadow-sm p-4">
-                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-4">
-                                <h2 className="text-xl font-semibold">PDF Generated</h2>
-                                <div className="flex flex-wrap gap-3">
-                                    <button
-                                        className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700"
-                                        onClick={() => window.open(pdfUrl, "_blank", "noopener,noreferrer")}
-                                        type="button"
-                                    >
-                                        Open PDF Preview
-                                    </button>
-                                    <button
-                                        className="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-900"
-                                        onClick={downloadPDF}
-                                        type="button"
-                                    >
-                                        Download PDF
-                                    </button>
+                    <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                        <aside className="p-3 rounded-4xl border border-slate-200/80 bg-white shadow-[0_35px_80px_-35px_rgba(15,23,42,0.12)] animate-fade-in-up">
+                            <div className="mb-6 rounded-3xl bg-sky-50 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between text-center">
+                                <div>
+                                    <p className="text-sm uppercase tracking-[0.35em] text-sky-600">Step 1</p>
+                                    <h2 className="mt-2 text-2xl font-semibold text-slate-950">Fill your details</h2>
                                 </div>
                             </div>
-                            <p className="text-sm text-gray-600">The PDF preview has been opened in a new tab. Use Download PDF to save the file.</p>
-                        </div>
-                    )}
-                </div>
-            ) : <div className='p-5 '>
-                <h1 className='text-2xl mt-70 m-auto'>Preview would be displayed here after the form submission</h1>
-                </div>}
+                            <StudentForm onSubmitData={handleFormData} />
+                        </aside>
 
+                        <div className="space-y-6">
+                            <div className="p-3 rounded-4xl border border-slate-200/80 bg-white shadow-[0_35px_80px_-35px_rgba(15,23,42,0.12)] animate-fade-in-up">
+                                <div className="mb-6 rounded-3xl bg-sky-50 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between text-center">
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.35em] text-sky-600">Step 2</p>
+                                        <h2 className="mt-2 text-2xl font-semibold text-slate-950">Live resume preview</h2>
+                                    </div>
+                                </div>
+                                <div className="mt-6">
+                                    {formData ? (
+                                        <Preview ref={previewRef} data={formData} onDownload={generatePDF} />
+                                    ) : (
+                                        <div className="rounded-3xl border border-dashed border-slate-300/70 bg-slate-50 p-10 text-center text-slate-600">
+                                            Your live preview will appear here after submitting the form.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {pdfUrl && (
+                                <div className="rounded-4xl border border-slate-200/80 bg-white p-6 shadow-[0_35px_80px_-35px_rgba(15,23,42,0.1)] backdrop-blur-xl animate-fade-in-up">
+                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <div>
+                                            <p className="text-sm uppercase tracking-[0.35em] text-sky-600">PDF Ready</p>
+                                            <h3 className="mt-2 text-xl font-semibold text-slate-950">Open or download your resume</h3>
+                                        </div>
+                                        <div className="flex flex-wrap gap-3">
+                                            <button
+                                                className="rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
+                                                onClick={() => window.open(pdfUrl, "_blank", "noopener,noreferrer")}
+                                                type="button"
+                                            >
+                                                Open PDF Preview
+                                            </button>
+                                            <button
+                                                className="rounded-2xl bg-slate-700 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-slate-600"
+                                                onClick={downloadPDF}
+                                                type="button"
+                                            >
+                                                Download PDF
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p className="mt-4 text-sm text-slate-600">A new tab has opened with your PDF. Use the download button to save a local copy.</p>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
-        </>
     );
 };
 
