@@ -124,8 +124,8 @@ const Preview = forwardRef(({ data, onDownload }, ref) => {
                     </div>
                 </div>
             </div>
-            <button className="bg-sky-400 p-3 print:hidden hover:cursor-pointer ms-3 mb-3" onClick={onDownload} variant="contained">
-                Generate PDF
+            <button className="bg-sky-400 p-3 print:hidden hover:cursor-pointer ms-3 mb-3" onClick={onDownload} type="button">
+                Preview PDF
             </button>
         </div>
     );
