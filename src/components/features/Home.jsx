@@ -30,11 +30,27 @@ const Home = () => {
         if (!previewRef.current || !formData) return;
 
         try {
-            const dataUrl = await toPng(previewRef.current, {
+            const clone = previewRef.current.cloneNode(true);
+            clone.style.width = "794px";
+            clone.style.maxWidth = "794px";
+            clone.style.boxSizing = "border-box";
+
+            const container = document.createElement("div");
+            container.style.position = "fixed";
+            container.style.top = "-9999px";
+            container.style.left = "-9999px";
+            container.style.width = "794px";
+            container.style.overflow = "hidden";
+            container.appendChild(clone);
+            document.body.appendChild(container);
+
+            const dataUrl = await toPng(clone, {
                 cacheBust: true,
                 pixelRatio: 2,
                 backgroundColor: "#ffffff",
             });
+
+            document.body.removeChild(container);
 
             const pdf = new jsPDF("p", "mm", "a4");
 
@@ -49,19 +65,17 @@ const Home = () => {
             const imgWidth = usableWidth;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
-            let heightLeft = imgHeight;
-            let position = margin;
+            pdf.addImage(dataUrl, "PNG", margin, margin, imgWidth, imgHeight);
 
-            // First page
-            pdf.addImage(dataUrl, "PNG", margin, position, imgWidth, imgHeight);
-            heightLeft -= usableHeight;
+            let remainingHeight = imgHeight - usableHeight;
+            let pageIndex = 1;
 
-            // Remaining pages
-            while (heightLeft > 0) {
+            while (remainingHeight > 0) {
                 pdf.addPage();
-                position = margin - (imgHeight - heightLeft - usableHeight);
-                pdf.addImage(dataUrl, "PNG", margin, position, imgWidth, imgHeight);
-                heightLeft -= usableHeight;
+                const yOffset = margin - pageIndex * usableHeight;
+                pdf.addImage(dataUrl, "PNG", margin, yOffset, imgWidth, imgHeight);
+                remainingHeight -= usableHeight;
+                pageIndex += 1;
             }
 
             const fileName =
