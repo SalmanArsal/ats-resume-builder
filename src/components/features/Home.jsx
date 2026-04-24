@@ -71,6 +71,7 @@ const Home = () => {
                 URL.revokeObjectURL(pdfUrl)
             }
 
+            window.open(url, "_blank", "noopener,noreferrer")
             setPdfUrl(url)
             setPdfFileName(`${fileName}_Resume.pdf`)
         } catch (error) {
@@ -104,20 +105,25 @@ const Home = () => {
                     {pdfUrl && (
                         <div className="w-full bg-white rounded-xl shadow-sm p-4">
                             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-4">
-                                <h2 className="text-xl font-semibold">PDF Preview</h2>
-                                <button
-                                    className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700"
-                                    onClick={downloadPDF}
-                                    type="button"
-                                >
-                                    Download PDF
-                                </button>
+                                <h2 className="text-xl font-semibold">PDF Generated</h2>
+                                <div className="flex flex-wrap gap-3">
+                                    <button
+                                        className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700"
+                                        onClick={() => window.open(pdfUrl, "_blank", "noopener,noreferrer")}
+                                        type="button"
+                                    >
+                                        Open PDF Preview
+                                    </button>
+                                    <button
+                                        className="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-900"
+                                        onClick={downloadPDF}
+                                        type="button"
+                                    >
+                                        Download PDF
+                                    </button>
+                                </div>
                             </div>
-                            <iframe
-                                src={pdfUrl}
-                                title="Resume PDF Preview"
-                                className="w-full h-[700px] border rounded-lg"
-                            />
+                            <p className="text-sm text-gray-600">The PDF preview has been opened in a new tab. Use Download PDF to save the file.</p>
                         </div>
                     )}
                 </div>
