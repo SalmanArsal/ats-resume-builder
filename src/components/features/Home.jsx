@@ -40,25 +40,28 @@ const Home = () => {
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
+            const margin = 10;
+            const usableWidth = pdfWidth - margin * 2;
+            const usableHeight = pdfHeight - margin * 2;
 
             // Convert image dimensions to PDF scale
             const imgProps = pdf.getImageProperties(dataUrl);
-            const imgWidth = pdfWidth;
+            const imgWidth = usableWidth;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
             let heightLeft = imgHeight;
-            let position = 0;
+            let position = margin;
 
             // First page
-            pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-            heightLeft -= pdfHeight;
+            pdf.addImage(dataUrl, "PNG", margin, position, imgWidth, imgHeight);
+            heightLeft -= usableHeight;
 
             // Remaining pages
             while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
                 pdf.addPage();
-                pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-                heightLeft -= pdfHeight;
+                position = margin - (imgHeight - heightLeft - usableHeight);
+                pdf.addImage(dataUrl, "PNG", margin, position, imgWidth, imgHeight);
+                heightLeft -= usableHeight;
             }
 
             const fileName =
