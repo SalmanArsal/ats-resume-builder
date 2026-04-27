@@ -4,7 +4,7 @@
   "functions": {
     "api/**/*.js": {
       "runtime": "nodejs20.x",
-      "includeFiles": ["db.json"]
+      "includeFiles": "db.json"
     }
   }
 }
