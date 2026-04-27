@@ -11,7 +11,41 @@
  * @param {Response} res - HTTP response with generated resume content
  */
 
-export default async function handler(req, res) {
+/**
+ * Validate that the resume content has the expected structure
+ * @param {Object} content - The content to validate
+ * @returns {boolean} - True if valid, false otherwise
+ */
+function validateResumeContent(content) {
+  if (!content || typeof content !== 'object') return false;
+  if (typeof content.summary !== 'string' || content.summary.trim().length === 0) return false;
+  if (!Array.isArray(content.skills) || content.skills.length === 0) return false;
+  if (!Array.isArray(content.experience) || content.experience.length === 0) return false;
+
+  // Validate each experience entry
+  for (const exp of content.experience) {
+    if (typeof exp.role !== 'string' || exp.role.trim().length === 0) return false;
+    if (!Array.isArray(exp.bullets) || exp.bullets.length === 0) return false;
+    for (const bullet of exp.bullets) {
+      if (typeof bullet !== 'string' || bullet.trim().length === 0) return false;
+    }
+  }
+
+  return true;
+}
+
+module.exports = async (req, res) => {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -40,7 +74,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4-turbo', // or 'gpt-3.5-turbo' for faster/cheaper responses
+        model: 'gpt-3.5-turbo',
         messages: [
           {
             role: 'system',
@@ -124,27 +158,4 @@ Return your response in this exact JSON format:
       details: error.message
     });
   }
-}
-
-/**
- * Validate that the resume content has the expected structure
- * @param {Object} content - The content to validate
- * @returns {boolean} - True if valid, false otherwise
- */
-function validateResumeContent(content) {
-  if (!content || typeof content !== 'object') return false;
-  if (typeof content.summary !== 'string' || content.summary.trim().length === 0) return false;
-  if (!Array.isArray(content.skills) || content.skills.length === 0) return false;
-  if (!Array.isArray(content.experience) || content.experience.length === 0) return false;
-
-  // Validate each experience entry
-  for (const exp of content.experience) {
-    if (typeof exp.role !== 'string' || exp.role.trim().length === 0) return false;
-    if (!Array.isArray(exp.bullets) || exp.bullets.length === 0) return false;
-    for (const bullet of exp.bullets) {
-      if (typeof bullet !== 'string' || bullet.trim().length === 0) return false;
-    }
-  }
-
-  return true;
-}
+};

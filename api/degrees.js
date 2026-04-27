@@ -1,9 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Hardcoded data as fallback if db.json cannot be read
-const fallbackData = [
+// Degrees data for the Resume Builder
+const degreesData = [
   { id: 1, name: "Bachelor of Technology (B.Tech)", short: "B.Tech", category: "Engineering" },
   { id: 2, name: "Bachelor of Engineering (B.E)", short: "B.E", category: "Engineering" },
   { id: 3, name: "Bachelor of Science (B.Sc)", short: "B.Sc", category: "Science" },
@@ -26,42 +22,26 @@ const fallbackData = [
   { id: 20, name: "Post Graduate Diploma (PGDM)", short: "PGDM", category: "Management" }
 ];
 
-export default function handler(req, res) {
+module.exports = (req, res) => {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    
-    // Try to read db.json from multiple locations
-    const possiblePaths = [
-      path.join(__dirname, '..', 'db.json'),           // ../db.json
-      path.join('/var', 'task', 'db.json'),            // Vercel path
-      path.join(process.cwd(), 'db.json'),             // Current directory
-    ];
-    
-    let data = null;
-    for (const dbPath of possiblePaths) {
-      if (fs.existsSync(dbPath)) {
-        const dbContent = fs.readFileSync(dbPath, 'utf-8');
-        const db = JSON.parse(dbContent);
-        data = db.degrees;
-        break;
-      }
-    }
-    
-    // Use fallback data if file not found
-    if (!data) {
-      console.warn('db.json not found, using fallback data');
-      data = fallbackData;
-    }
-    
-    res.status(200).json(data);
+    res.status(200).json(degreesData);
   } catch (error) {
-    console.error('Error in degrees endpoint:', error.message);
-    // Return fallback data on error
-    res.status(200).json(fallbackData);
+    console.error('Error in degrees endpoint:', error);
+    res.status(500).json({ error: 'Failed to fetch degrees data' });
   }
-}
+};
