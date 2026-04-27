@@ -3,10 +3,8 @@
   "outputDirectory": "dist",
   "functions": {
     "api/**/*.js": {
+      "runtime": "nodejs20.x",
       "includeFiles": ["db.json"]
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
   }
 }
