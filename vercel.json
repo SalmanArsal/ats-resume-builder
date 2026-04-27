@@ -1,9 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/**/*.js": {
-      "includeFiles": "db.json"
-    }
-  }
+  "outputDirectory": "dist"
 }
