@@ -36,7 +36,7 @@ export default function FormDialog({ onSave }) {
         Add Project Details
       </Button>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => setOpen(false)} keepMounted={false}>
         <DialogContent>
           <TextField
             name="title"

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import StudentForm from './StudentForm.jsx'
 import Preview from './Preview.jsx'
+import AIResumeGenerator from './AIResumeGenerator.jsx'
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 
@@ -10,6 +11,7 @@ const Home = () => {
     const [formData, setFormData] = useState()
     const [pdfUrl, setPdfUrl] = useState(null)
     const [pdfFileName, setPdfFileName] = useState("")
+    const [activeTab, setActiveTab] = useState('manual') // 'manual' or 'ai'
 
     useEffect(() => {
         return () => {
@@ -23,6 +25,39 @@ const Home = () => {
         setFormData(data)
         setPdfUrl(null)
         setPdfFileName("")
+    }
+
+    /**
+     * Merge AI-generated content into the existing form data
+     * This preserves manual edits while updating specific fields
+     */
+    const handleApplyAIContent = (aiContent) => {
+        if (!formData) {
+            alert('Please fill in the contact information first (Full Name, Email, Phone)');
+            return;
+        }
+
+        // Merge AI content with existing data
+        // AI content: { summary, skills[], experience[] }
+        const mergedData = {
+            ...formData,
+            // Update job description if AI provided experience
+            job_desc: aiContent.experience?.[0]?.bullets?.join(' • ') || formData.job_desc,
+            // Merge project details with AI experience
+            project: {
+                ...formData.project,
+                title: aiContent.experience?.[0]?.role || formData.project?.title,
+                // Store skills as techstack (comma-separated)
+                techstack: aiContent.skills?.join(', ') || formData.project?.techstack,
+                // Store first bullet as description
+                project_desc: aiContent.experience?.[0]?.bullets?.[0] || formData.project?.project_desc,
+                role: aiContent.experience?.[0]?.role || formData.project?.role,
+            },
+        };
+
+        setFormData(mergedData);
+        setActiveTab('manual'); // Switch back to manual view to show merged content
+        alert('✅ AI content has been merged into your resume. Review and adjust as needed before downloading.');
     }
 
     const generatePDF = async () => {
@@ -112,19 +147,52 @@ const Home = () => {
                 <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                     <header className="mb-10 text-center">
                         <span className="inline-flex rounded-full bg-sky-500/15 px-4 py-1 text-xl font-semibold uppercase tracking-[0.35em]">ATS Resume Builder</span>
-                        <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Create a polished, ATS-friendly resume instantly.</h1>
+                        <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Create a ATS-friendly Resume Instantly.</h1>
                         <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">Fill the form, preview your resume live, and open the generated PDF in a new browser tab for final inspection or download.</p>
                     </header>
 
                     <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                        {/* Left Panel: Form Input */}
                         <aside className="p-3 rounded-4xl border border-slate-200/80 bg-white shadow-[0_35px_80px_-35px_rgba(15,23,42,0.12)] animate-fade-in-up">
-                            <div className="mb-6 rounded-3xl bg-sky-50 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between text-center">
-                                <div>
-                                    <p className="text-sm uppercase tracking-[0.35em] text-sky-600">Step 1</p>
-                                    <h2 className="mt-2 text-2xl font-semibold text-slate-950">Fill your details</h2>
-                                </div>
+                            {/* Tab Navigation */}
+                            <div className="mb-6 flex gap-2 rounded-3xl bg-sky-50 p-2">
+                                <button
+                                    onClick={() => setActiveTab('manual')}
+                                    className={`flex-1 py-3 px-4 rounded-2xl font-semibold transition ${
+                                        activeTab === 'manual'
+                                            ? 'bg-sky-600 text-white'
+                                            : 'bg-transparent text-sky-600 hover:bg-sky-100'
+                                    }`}
+                                >
+                                    📝 Manual Entry
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('ai')}
+                                    className={`flex-1 py-3 px-4 rounded-2xl font-semibold transition ${
+                                        activeTab === 'ai'
+                                            ? 'bg-sky-600 text-white'
+                                            : 'bg-transparent text-sky-600 hover:bg-sky-100'
+                                    }`}
+                                >
+                                    🤖 AI Generate
+                                </button>
                             </div>
-                            <StudentForm onSubmitData={handleFormData} />
+
+                            {/* Manual Entry Tab */}
+                            {activeTab === 'manual' && (
+                                <div>
+                                    <div className="mb-6 rounded-3xl bg-sky-50 p-5 shadow-sm text-center">
+                                        <p className="text-sm uppercase tracking-[0.35em] text-sky-600">Step 1</p>
+                                        <h2 className="mt-2 text-2xl font-semibold text-slate-950">Fill Your Details</h2>
+                                    </div>
+                                    <StudentForm onSubmitData={handleFormData} />
+                                </div>
+                            )}
+
+                            {/* AI Generator Tab */}
+                            {activeTab === 'ai' && (
+                                <AIResumeGenerator onApplyContent={handleApplyAIContent} />
+                            )}
                         </aside>
 
                         <div className="space-y-6">
@@ -132,7 +200,7 @@ const Home = () => {
                                 <div className="mb-6 rounded-3xl bg-sky-50 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between text-center">
                                     <div>
                                         <p className="text-sm uppercase tracking-[0.35em] text-sky-600">Step 2</p>
-                                        <h2 className="mt-2 text-2xl font-semibold text-slate-950">Live resume preview</h2>
+                                        <h2 className="mt-2 text-2xl font-semibold text-slate-950">Live Resume Preview</h2>
                                     </div>
                                 </div>
                                 <div className="mt-6">

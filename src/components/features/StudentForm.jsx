@@ -7,6 +7,7 @@ import useFetch from "../Hooks/useFetch";
 import axios from "axios";
 import { schema } from "./validationScema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
 
 export default function StudentForm({ onSubmitData }) {
     const { control, handleSubmit, setValue, reset } = useForm({
@@ -33,16 +34,19 @@ export default function StudentForm({ onSubmitData }) {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                // Use /api endpoints for both development and production
+                // In development: Make sure vite.config.js has proxy setup, or use port 3001
                 const [colleges, degrees] = await Promise.all([
-                    axios.get("http://localhost:3000/colleges", { signal: controller.signal }),
-                    axios.get("http://localhost:3000/degrees", { signal: controller.signal })
+                    axios.get("/api/colleges", { signal: controller.signal }),
+                    axios.get("/api/degrees", { signal: controller.signal })
                 ]);
 
                 setColleges(colleges.data);
                 setDegrees(degrees.data);
             } catch (err) {
                 if (axios.isCancel(err)) return;
-                console.error(err);
+                console.error("Failed to fetch colleges/degrees:", err);
+                toast.error("Failed to load college and degree data");
             } finally {
                 setLoading(false);
             }
@@ -58,15 +62,16 @@ export default function StudentForm({ onSubmitData }) {
     }
 
     const onSubmit = (data) => {
-        onSubmitData(data)
+        onSubmitData(data);
         reset()
+        toast.success("Student details submitted successfully!");
     };
 
     return (
         <Box sx={{ width: "100%", p: 5, borderRadius: 4, border: "1px solid rgba(148,163,184,0.35)", backgroundColor: "#ffffff", boxShadow: "0 24px 80px rgba(15,23,42,0.08)" }} >
-            <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 700, color: '#0f172a' }}>
+            {/* <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 700, color: '#0f172a' }}>
                 Provide The Details To Build Resume
-            </Typography>
+            </Typography> */}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} direction='column'>
                     <Grid item xs={12}>
@@ -217,7 +222,7 @@ export default function StudentForm({ onSubmitData }) {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <FormDialog onSave={projectData => {
+                        <FormDialog onSave={(projectData) => {
                             setValue("project", projectData, {
                                 shouldDirty: true,
                                 shouldValidate: true

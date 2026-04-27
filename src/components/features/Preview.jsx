@@ -47,12 +47,12 @@ const Preview = forwardRef(({ data, onDownload }, ref) => {
                                     <div>
                                         <p className="text-xs font-semibold text-slate-600 uppercase">12th Grade</p>
                                         <p className="text-sm text-slate-800">{data.twelthCollege}</p>
-                                        <p className="text-xs font-bold text-sky-600">Percentage: {data.twelthPercentage}%</p>
+                                        <p className="text-xs font-bold text-sky-600">Percentage: {data.twelthPercentage}</p>
                                     </div>
                                     <div>
                                         <p className="text-xs font-semibold text-slate-600 uppercase">School</p>
                                         <p className="text-sm text-slate-800">{data.schoolName}</p>
-                                        <p className="text-xs font-bold text-sky-600">Percentage: {data.schoolPercentage}%</p>
+                                        <p className="text-xs font-bold text-sky-600">Percentage: {data.schoolPercentage}</p>
                                     </div>
                                 </div>
                             </div>
@@ -87,39 +87,6 @@ const Preview = forwardRef(({ data, onDownload }, ref) => {
                                 <p className="text-sm text-slate-700 leading-relaxed">{data.job_desc}</p>
                             </section>
                         )}
-
-                        {/* Skills Highlight */}
-                        <section>
-                            <h2 className="text-base font-bold text-white bg-sky-600 px-4 py-2 mb-3 uppercase tracking-wider">Core Competencies</h2>
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-slate-50 p-3 rounded">
-                                    <p className="text-xs font-semibold text-slate-600">Technical</p>
-                                    <p className="text-sm text-slate-800">Full Stack Development, Problem Solving</p>
-                                </div>
-                                <div className="bg-slate-50 p-3 rounded">
-                                    <p className="text-xs font-semibold text-slate-600">Professional</p>
-                                    <p className="text-sm text-slate-800">Team Collaboration, Project Management</p>
-                                </div>
-                                <div className="bg-slate-50 p-3 rounded">
-                                    <p className="text-xs font-semibold text-slate-600">Languages</p>
-                                    <p className="text-sm text-slate-800">English, Hindi</p>
-                                </div>
-                                <div className="bg-slate-50 p-3 rounded">
-                                    <p className="text-xs font-semibold text-slate-600">Tools & Platforms</p>
-                                    <p className="text-sm text-slate-800">Git, VS Code, Modern Web Stack</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Certifications */}
-                        <section>
-                            <h2 className="text-base font-bold text-white bg-sky-600 px-4 py-2 mb-3 uppercase tracking-wider">Achievements</h2>
-                            <ul className="text-sm text-slate-700 space-y-2 list-disc list-inside">
-                                <li>Successfully delivered multiple projects with attention to detail and quality</li>
-                                <li>Consistent academic performer with strong analytical and technical skills</li>
-                                <li>Demonstrated ability to learn and adapt to new technologies quickly</li>
-                            </ul>
-                        </section>
                     </div>
 
                     {/* Footer */}
